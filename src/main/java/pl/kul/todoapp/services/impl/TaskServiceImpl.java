@@ -31,7 +31,6 @@ public class TaskServiceImpl implements TaskService {
         Tasks task = Tasks.builder()
                 .title(title)
                 .description(desc)
-                .creationDate(Timestamp.from(Instant.now()))
                 .status(TaskStatusEnum.TODO)
                 .build();
         return Optional.of(taskRepository.save(task));
