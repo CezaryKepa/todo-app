@@ -28,7 +28,6 @@ dependencies {
     implementation group: 'org.openjfx', name: 'javafx-fxml', version: '15.0.1', classifier: platform
     implementation group: 'org.openjfx', name: 'javafx-web', version: '15.0.1', classifier: platform
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.4'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
