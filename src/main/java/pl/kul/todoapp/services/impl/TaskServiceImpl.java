@@ -5,57 +5,57 @@ import org.springframework.stereotype.Service;
 import pl.kul.todoapp.enums.TaskStatusEnum;
 import pl.kul.todoapp.models.Tasks;
 import pl.kul.todoapp.repositories.TaskRepository;
-import pl.kul.todoapp.services.TasksService;
+import pl.kul.todoapp.services.TaskService;
 import pl.kul.todoapp.validators.TaskValidator;
 
 import javax.xml.bind.ValidationException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class TasksServiceImpl implements TasksService {
+public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskValidator taskValidator;
 
     @Autowired
-    public TasksServiceImpl(final TaskRepository taskRepository, final TaskValidator taskValidator) {
+    public TaskServiceImpl(final TaskRepository taskRepository, final TaskValidator taskValidator) {
         this.taskRepository = taskRepository;
         this.taskValidator = taskValidator;
     }
 
     @Override
-    public Tasks create(final String title, final String desc) throws ValidationException {
+    public Optional<Tasks> create(final String title, final String desc) throws ValidationException {
         taskValidator.validate(title, desc);
         Tasks task = Tasks.builder()
                 .title(title)
                 .description(desc)
-                .creationDate(Timestamp.from(Instant.now()))
                 .status(TaskStatusEnum.TODO)
                 .build();
-        return taskRepository.save(task);
+        return Optional.of(taskRepository.save(task));
     }
 
     @Override
-    public Tasks get(final long taskId) {
-        return taskRepository.findById(taskId).orElseThrow();
+    public Optional<Tasks> get(final long taskId) {
+        return taskRepository.findById(taskId);
     }
 
     @Override
-    public Tasks update(final Tasks requestTask) throws ValidationException {
+    public Optional<Tasks> update(final Tasks requestTask) throws ValidationException {
         taskValidator.validateRequest(requestTask);
         Tasks task = taskRepository.findById(requestTask.getId()).orElseThrow();
         updateTaskValues(requestTask, task);
-        return taskRepository.save(requestTask);
+        return Optional.of(taskRepository.save(requestTask));
     }
 
     @Override
-    public Tasks changeStatus(final Long taskId, final TaskStatusEnum newTaskStatus) throws ValidationException {
+    public Optional<Tasks> changeStatus(final Long taskId, final TaskStatusEnum newTaskStatus) throws ValidationException {
         taskValidator.validateStatusChange(taskId, newTaskStatus);
         Tasks task = taskRepository.findById(taskId).orElseThrow();
         task.setStatus(newTaskStatus);
-        return taskRepository.save(task);
+        return Optional.of(taskRepository.save(task));
     }
 
     @Override

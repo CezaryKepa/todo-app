@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import pl.kul.todoapp.TodoAppApplication;
 import pl.kul.todoapp.enums.TaskStatusEnum;
 import pl.kul.todoapp.models.Tasks;
-import pl.kul.todoapp.services.TasksService;
+import pl.kul.todoapp.services.TaskService;
 
 
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
 public class TasksViewModel {
     List<Tasks> tasks;
 
-    TasksService tasksService = TodoAppApplication.ctx.getBean(TasksService.class);
+    TaskService taskService = TodoAppApplication.ctx.getBean(TaskService.class);
 
     public TasksViewModel() {
-        this.tasks = tasksService.getAll();
+        this.tasks = taskService.getAll();
     }
 
     ObservableList<StackPane> observableTodoList = FXCollections.observableArrayList();

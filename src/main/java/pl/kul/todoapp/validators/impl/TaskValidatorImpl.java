@@ -29,16 +29,6 @@ public class TaskValidatorImpl implements TaskValidator {
     }
 
     @Override
-    public void validateStatusChange(final Long taskId, final TaskStatusEnum newStatus) throws ValidationException {
-        if (ObjectUtils.isEmpty(taskId)) {
-            throw new ValidationException("Task ID is empty");
-        }
-        if (ObjectUtils.isEmpty(newStatus)) {
-            throw new ValidationException("Task status is empty");
-        }
-    }
-
-    @Override
     public boolean validateTitle(final String title) throws ValidationException {
         if (Strings.isEmpty(title)) {
             throw new ValidationException("Title is empty");
@@ -60,9 +50,23 @@ public class TaskValidatorImpl implements TaskValidator {
         return true;
     }
 
+
+    @Override
+    public void validateStatusChange(final Long taskId, final TaskStatusEnum newStatus) throws ValidationException {
+        if (ObjectUtils.isEmpty(taskId)) {
+            throw new ValidationException("Task ID is empty");
+        }
+        if (taskId < 0L) {
+            throw new ValidationException("Task ID is invalid");
+        }
+        if (ObjectUtils.isEmpty(newStatus)) {
+            throw new ValidationException("Task status is empty");
+        }
+    }
+
     @Override
     public boolean validateStatus(final TaskStatusEnum status) {
-        return status != null;
+        return !ObjectUtils.isEmpty(status);
     }
 
 }
