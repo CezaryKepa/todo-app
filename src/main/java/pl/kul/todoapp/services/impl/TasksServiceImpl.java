@@ -11,6 +11,7 @@ import pl.kul.todoapp.validators.TaskValidator;
 import javax.xml.bind.ValidationException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class TasksServiceImpl implements TasksService {
@@ -75,4 +76,8 @@ public class TasksServiceImpl implements TasksService {
         destination.setUpdateDate(Timestamp.from(Instant.now()));
     }
 
+    @Override
+    public List<Tasks> getAll() {
+        return taskRepository.findAll();
+    }
 }
